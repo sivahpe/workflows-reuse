@@ -1,0 +1,34 @@
+name: reusable CI
+
+on:
+  workflow_call:
+    inputs:
+      java-version:
+        required: true
+        type: number
+      repository:
+        required: false
+        description: The repository to checkout. Should only be used for verifying changes to the workflow itself.
+        type: string
+        default: ${{ github.repository }}
+    secrets:
+      SSH_KEY:
+        required: false
+        description: The SSH key to use for checking out the repository. Should only be used for verifying changes to the workflow itself.
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 1
+          repository: ${{ inputs.repository }}
+          ssh-key: ${{ secrets.SSH_KEY }}
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          java-version: ${{ inputs.java-version }}
+          cache: 'gradle'
+      - name: clean build
+        run: ./gradlew clean build --no-daemon --info --stacktrace

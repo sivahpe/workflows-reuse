@@ -1,0 +1,16 @@
+name: CI
+
+on:
+  pull_request:
+    paths:
+      - .github/workflows/ci.yml
+      - .github/workflows/reusable-ci.yml
+
+jobs:
+  ci:
+    uses: ./.github/workflows/reusable-ci.yml
+    with:
+      java-version: 17
+      repository: XiangRongLin/reusable-workflows-sample-project
+    secrets:
+      SSH_KEY: ${{ secrets.SAMPLE_PROJECT_READ_KEY }}
