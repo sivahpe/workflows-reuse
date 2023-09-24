@@ -16,3 +16,12 @@ jobs:
     secrets:
       SSH_KEY: ${{ secrets.SAMPLE_PROJECT_READ_KEY }}
 
+  tag-manage:
+    uses: ./.github/workflows/tag-manage
+    with:
+      java-version: 17
+      repository: sivahpe/calling-repo
+    secrets:
+      SSH_KEY: ${{ secrets.SAMPLE_PROJECT_READ_KEY }}
+
+

@@ -26,10 +26,6 @@ jobs:
           repository: ${{ inputs.repository }}
           ssh-key: ${{ secrets.SSH_KEY }}
       
-      - name: tag-manage
-        uses: ./.github/actions/tag-manage
-        id: tag-manage
-
         
       - name: Set up JDK
         uses: actions/setup-java@v3
