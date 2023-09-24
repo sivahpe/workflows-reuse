@@ -14,3 +14,4 @@ jobs:
       repository: sivahpe/calling-repo
     secrets:
       SSH_KEY: ${{ secrets.SAMPLE_PROJECT_READ_KEY }}
+
