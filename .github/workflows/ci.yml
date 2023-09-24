@@ -6,11 +6,13 @@ on:
       - .github/workflows/ci.yml
       - .github/workflows/reusable-ci.yml
 
+
 jobs:
   ci:
     uses: ./.github/workflows/reusable-ci.yml
     with:
-      java-version: 17
-      repository: sivahpe/calling-repo
+      # java-version: 17
+      repository: sivahpe/hello-world
     secrets:
       SSH_KEY: ${{ secrets.SAMPLE_PROJECT_READ_KEY }}
+
