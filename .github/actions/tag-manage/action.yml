@@ -1,0 +1,69 @@
+# (C) Copyright 2023 Hewlett Packard Enterprise Development LP
+
+name: tag manage
+description: |
+  N.B. You must pull the repo with fetch-depth: 0 to get all tags.
+
+
+inputs:
+  api_token_containers_repo_read_all:
+    description: |
+      The token to use to read tag-manage from the containers repo
+    required: true
+
+  api_token:
+    description: |
+      The token to use to push tags to the repo
+    required: true
+
+  default_tag_version:
+    description: default tag version to describe
+    required: false
+    default: "0.0.1"
+
+  min_tag_version:
+    description: minimum tag version to create
+    required: false
+    default: "0.0.1"
+
+
+outputs:
+  computed_tag:
+    description: "The computed tag output string"
+    value: ${{ steps.output.outputs.tag }}
+
+runs:
+  using: "composite"
+  steps:
+
+    - name: setup tag-manage
+      shell: bash
+      run: |
+        tag_manage_url="https://raw.githubusercontent.com/hpe-cds/containers/main/cds-base/files/tag-manage"
+        tag_manage_path="/usr/local/bin/tag-manage"
+        
+        echo "fetching tag-manage from containers repo"
+        
+        wget \
+          -O "${tag_manage_path}" \
+          --header "Authorization: token ${{ inputs.api_token_containers_repo_read_all }}" \
+          "${tag_manage_url}"
+        
+        chmod +x "${tag_manage_path}"
+
+    - name: git configure
+      uses: hpe-cds/reusable-workflows/.github/actions/git-configure@main
+      with:
+        GITHUB_TOKEN: ${{ inputs.api_token }}
+
+    - name: push tag
+      if: github.ref == 'refs/heads/main'
+      shell: bash
+      run: |
+        # Create tag and only push tags to the main branch
+        tag-manage create --min ${{ inputs.min_tag_version }} --push -vv
+
+    - name: output tag
+      id: output
+      shell: bash
+      run: echo "tag=$(tag-manage describe --default ${{ inputs.default_tag_version }})" >> $GITHUB_OUTPUT
