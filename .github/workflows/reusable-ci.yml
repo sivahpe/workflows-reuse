@@ -36,6 +36,6 @@ jobs:
         id: unit-test
         uses: sivahpe/action-reuse/.github/actions/go-unit@main
         with:
-          directories-to-test: ./hello-world/hello-world
+          directories-to-test: ./hello-world
       
 
