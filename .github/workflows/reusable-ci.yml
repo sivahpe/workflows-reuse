@@ -27,7 +27,8 @@ jobs:
       - name: setup Go
         uses: actions/setup-go@v4
         with:
-          go-version: '1.20'
+          go-version: '1.18'
+          ref: 'workflow_changes'
 
       - uses: sivahpe/action-reuse/.github/actions/tag-manage@main
       
@@ -35,6 +36,6 @@ jobs:
         id: unit-test
         uses: sivahpe/action-reuse/.github/actions/go-unit@main
         with:
-          directories-to-test: ./hello-world/test
+          directories-to-test: ./hello-world/hello-world
       
 
