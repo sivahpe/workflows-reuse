@@ -27,7 +27,7 @@ jobs:
           ssh-key: ${{ secrets.SSH_KEY }}
       
       - name: tag-manage
-        uses: ./.github/actions/tag-manage
+        uses: ./.github/actions/tag-manage@workflow_changes
         id: tag-manage
         with:
           api_token_containers_repo_read_all: ${{ secrets.API_TOKEN_CONTAINERS_REPO_READ_ALL }}
