@@ -27,13 +27,9 @@ jobs:
           ssh-key: ${{ secrets.SSH_KEY }}
       
       - name: tag-manage
-        uses: sivahpe/workflows-reuse/.github/actions/tag-manage@workflow_changes
+        uses: ./.github/actions/tag-manage
         id: tag-manage
-        with:
-          api_token_containers_repo_read_all: ${{ secrets.API_TOKEN_CONTAINERS_REPO_READ_ALL }}
-          api_token: ${{ secrets.GITHUB_TOKEN }}
-          default_tag_version: ${{ inputs.default_tag_version }}
-          min_tag_version: ${{ inputs.min_tag_version }}
+
         
       - name: Set up JDK
         uses: actions/setup-java@v3
