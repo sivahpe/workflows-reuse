@@ -3,18 +3,18 @@ name: reusable CI
 on:
   workflow_call:
     inputs:
-      java-version:
-        required: true
-        type: number
-      repository:
-        required: false
-        description: The repository to checkout. Should only be used for verifying changes to the workflow itself.
-        type: string
-        default: ${{ github.repository }}
-    secrets:
-      SSH_KEY:
-        required: false
-        description: The SSH key to use for checking out the repository. Should only be used for verifying changes to the workflow itself.
+    #   java-version:
+    #     required: true
+    #     type: number
+    #   repository:
+    #     required: false
+    #     description: The repository to checkout. Should only be used for verifying changes to the workflow itself.
+    #     type: string
+    #     default: ${{ github.repository }}
+    # secrets:
+    #   SSH_KEY:
+    #     required: false
+    #     description: The SSH key to use for checking out the repository. Should only be used for verifying changes to the workflow itself.
 
 jobs:
   build:
@@ -38,4 +38,3 @@ jobs:
           directories-to-test: ./hello-world/test
       
 
-          
