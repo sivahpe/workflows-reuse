@@ -22,16 +22,17 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          fetch-depth: 1
-          repository: ${{ inputs.repository }}
-          ssh-key: ${{ secrets.SSH_KEY }}
+          fetch-depth: 0
       
-      - uses: ./.github/actions/tag-manage  
-      - name: Set up JDK
-        uses: actions/setup-java@v3
+      - name: setup Go
+        uses: actions/setup-go@v4
         with:
-          distribution: 'temurin'
-          java-version: ${{ inputs.java-version }}
-          cache: 'gradle'
-      - name: clean build
-        run: ./gradlew clean build --no-daemon --info --stacktrace
+          go-version: '1.20'
+
+      - uses: sivahpe/action-reuse/.github/actions/tag-manage@main
+      - name: unit tests
+        id: unit-test
+        uses: hpe-cds/reusable-workflows/.github/actions/go-unit@main
+        with:
+          directories-to-test: ./hello-world/test
+      
