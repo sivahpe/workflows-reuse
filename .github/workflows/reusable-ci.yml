@@ -2,15 +2,15 @@ name: reusable CI
 
 on:
   workflow_call:
-    #inputs:
+   inputs:
     #   java-version:
     #     required: true
     #     type: number
-    #   repository:
-    #     required: false
-    #     description: The repository to checkout. Should only be used for verifying changes to the workflow itself.
-    #     type: string
-    #     default: ${{ github.repository }}
+      repository:
+        required: false
+        description: The repository to checkout. Should only be used for verifying changes to the workflow itself.
+        type: string
+        default: ${{ github.repository }}
     # secrets:
     #   SSH_KEY:
     #     required: false
@@ -22,13 +22,15 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          fetch-depth: 0
+         fetch-depth: 1
+         repository: ${{ inputs.repository }}
+         ssh-key: ${{ secrets.SSH_KEY }}
       - run: ls -la
       - name: setup Go
         uses: actions/setup-go@v4
         with:
           go-version: '1.18'
-          ref: 'workflow_changes'
+
 
       - uses: sivahpe/action-reuse/.github/actions/tag-manage@main
       
