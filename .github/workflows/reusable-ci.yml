@@ -33,7 +33,7 @@ jobs:
       
       - name: unit tests
         id: unit-test
-        uses: hpe-cds/reusable-workflows/.github/actions/go-unit@main
+        uses: sivahpe/action-reuse/.github/actions/go-unit@main
         with:
           directories-to-test: ./hello-world/test
       
