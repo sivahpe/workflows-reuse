@@ -11,6 +11,6 @@ jobs:
     uses: ./.github/workflows/reusable-ci.yml
     with:
       java-version: 17
-      repository: XiangRongLin/reusable-workflows-sample-project
+      repository: sivahpe/calling-repo
     secrets:
       SSH_KEY: ${{ secrets.SAMPLE_PROJECT_READ_KEY }}
