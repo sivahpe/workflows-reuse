@@ -39,5 +39,3 @@ jobs:
         uses: sivahpe/action-reuse/.github/actions/go-unit@main
         with:
           directories-to-test: ./hello-world
-      
-
