@@ -32,11 +32,11 @@ jobs:
           go-version: '1.18'
 
 
-      - uses: sivahpe/action-reuse/.github/actions/tag-manage@main
+      - uses: ./.github/actions/tag-manage
       
       - name: unit tests
         id: unit-test
-        uses: sivahpe/action-reuse/.github/actions/go-unit@main
+        uses: ./.github/actions/go-unit
         with:
           directories-to-test: ./hello-world
       
