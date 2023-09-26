@@ -1,0 +1,30 @@
+# (C) Copyright 2023 Hewlett Packard Enterprise Development LP
+
+name: mockery
+description: |
+  Installs and runs `mockery` to make sure the mocks were correctly built, using a cached version if available.
+
+inputs:
+  version:
+    description: The version of mockery to install.
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup mockery
+      uses: hpe-cds/reusable-workflows/.github/actions/go-install@main
+      with:
+        name: mockery
+        package: github.com/vektra/mockery/v2
+        version: ${{ inputs.version }}
+
+    - name: Regenerate mocks
+      shell: bash
+      run: |
+        rm -rf mocks
+        GOFLAGS="" mockery
+
+    # exits with 1 if PR does not have up-to-date mocks
+    - name: diff check
+      uses: hpe-cds/reusable-workflows/.github/actions/diff-check@main

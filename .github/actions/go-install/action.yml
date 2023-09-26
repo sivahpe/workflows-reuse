@@ -1,0 +1,31 @@
+# (C) Copyright 2023 Hewlett Packard Enterprise Development LP
+
+name: go-install
+description: |
+  Installs go binaries, using a cached version if available.
+
+inputs:
+  name:
+    description: The name of binary to install. Used to support caching.
+    required: true
+  package:
+    description: The package to install.
+    required: true
+  version:
+    description: The version to install.
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Cache
+      id: cache
+      uses: actions/cache@v3
+      with:
+        path: ~/go/bin/${{ inputs.name }}
+        key: ${{ runner.os }}-${{ inputs.name }}-${{ inputs.version }}
+
+    - name: Install
+      if: steps.cache.outputs.cache-hit != 'true'
+      shell: bash
+      run: go install ${{ inputs.package }}@${{ inputs.version }}

@@ -1,0 +1,21 @@
+# (C) Copyright 2023 Hewlett Packard Enterprise Development LP
+
+name: helm-lint
+description: |
+    Installs and runs various k8s linters.
+    ASSUMPTIONS:
+    - all charts exist in a flat structure in the `helm` directory
+    - we lint using `helm lint`, `kube-conform`, and optionally `kubescore`
+
+runs:
+  using: "composite"
+  steps:
+    - name: lint
+      id: helm-lint
+      shell: bash
+      run: |
+         charts=$(find . -name Chart.yaml -type f | sed 's/\/Chart.yaml//g')
+         for chart in ${charts}; do
+          helm lint ${chart}
+        done
+          helm lint ${chart}

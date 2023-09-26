@@ -1,0 +1,34 @@
+# (C) Copyright 2023 Hewlett Packard Enterprise Development LP
+
+name: Go wire
+description: |
+  Installs and runs [wire], using a cached version if available.
+
+  The actions/setup-go action must be completed beforehand, so the Go CLI can be used to download
+  and install the wire tool.
+
+  [wire]: github.com/google/wire
+
+inputs:
+  version:
+    description: The version of wire to install.
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup wire
+      uses: hpe-cds/reusable-workflows/.github/actions/go-install@main
+      with:
+        name: wire
+        package: github.com/google/wire/cmd/wire
+        version: ${{ inputs.version }}
+
+    - name: Wire
+      shell: bash
+      run: |
+        ~/go/bin/wire gen $(find . -name wire.go -printf '%h ' -o -path ./vendor -prune -type f)
+
+    # exits with 1 if PR does not have up-to-date mocks
+    - name: diff check
+      uses: hpe-cds/reusable-workflows/.github/actions/diff-check@main

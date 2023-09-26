@@ -1,0 +1,33 @@
+# (C) Copyright 2023 Hewlett Packard Enterprise Development LP
+
+name: go unit
+description: runs go test on a default set of overridable directories
+
+inputs:
+  directories-to-test:
+    description: |
+      Directories to test. Defaults to ./internal/... and ./cmd/...
+    required: false
+    default: |
+      ./internal/...
+      ./cmd/...
+
+outputs:
+  coverage-percent:
+    description: |
+      The unit tests coverage of the inputted directories
+      Output will be a string representing the percentage, ex. '94'
+    value: ${{ steps.unit-test.outputs.coverage-percent }}
+
+runs:
+  using: "composite"
+  steps:
+  - shell: bash
+    id: unit-test
+    env:
+      DIRS: ${{ inputs.directories-to-test }}
+    run: |
+      go test ${DIRS} -cover -coverprofile=coverage.out
+
+      # Parses GO unit testing results to get the total test percentage as a number with no percent sign, Ex. 97. Used as metrics uploader input
+      echo "coverage-percent=$(go tool cover -func=coverage.out | awk '/^total/ { { gsub("%", "")}; print $3}')" >> "${GITHUB_OUTPUT}"

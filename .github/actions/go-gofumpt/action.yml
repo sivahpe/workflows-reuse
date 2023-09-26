@@ -1,0 +1,35 @@
+# (C) Copyright 2023 Hewlett Packard Enterprise Development LP
+
+name: gofumpt
+description: |
+  Installs and runs `gofumpt`, using a cached version if available.
+
+  The actions/setup-go action must be completed beforehand, so the Go CLI can be used to download
+  and install the gofumpt tool.
+  
+  gofumpt is the GLCP recommended formatter.
+  https://github.com/mvdan/gofumpt
+
+inputs:
+  version:
+    description: The version of gofumpt to install.
+    required: true
+
+outputs:
+  cache-hit:
+    description: Whether gofumpt was installed from cache.
+    value: ${{ steps.cache-gofumpt.outputs.cache-hit }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup gofumpt
+      uses: hpe-cds/reusable-workflows/.github/actions/go-install@main
+      with:
+        name: gofumpt
+        package: mvdan.cc/gofumpt
+        version: ${{ inputs.version }}
+
+    - name: Gofumpt
+      shell: bash
+      run: ~/go/bin/gofumpt -d -l .

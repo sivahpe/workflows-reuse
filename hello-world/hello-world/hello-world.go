@@ -5,7 +5,9 @@ package main
 import "fmt"
 
 func Hello() string {
-	return "hello world"
+	var s string
+    s = "hello world"
+	return s
 }
 
 func main() {
